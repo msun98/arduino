@@ -12,7 +12,9 @@
 int Motor_speed = 100; // 모터 속도 PWM 100으로 설정 0~255
 void front(int Motor_speed);
 void back(int Motor_speed);
+void motor_stop();
 int ultra();
+
 
 void setup()
 {
@@ -36,17 +38,15 @@ void loop()
   dis = ultra();
   void ultra();
   // 모터 A,B 정방향
-  if (155 > dis) // for obstacle avoid(장애물 피하기)
+  if (150 < dis) // for obstacle avoid(장애물 피하기)
     {
       front(Motor_speed);
     }
-  //delay(3000);          // 3초동안 정방향 회전
   // 모터A,B 역방향
   else
     {
-      back(Motor_speed);
+      motor_stop();
     }
-  delay(3000);       // 3초동안 역방향 회전
 }
 
 void front(int Motor_speed)
@@ -70,6 +70,18 @@ void back(int Motor_speed)
   digitalWrite(EN3, HIGH);
   analogWrite(ENB, Motor_speed);
 }
+
+void motor_stop()
+{
+  digitalWrite(EN1, LOW);  // 모터A설정
+  digitalWrite(EN2, LOW);
+  analogWrite(ENA, 0);
+
+  digitalWrite(EN4, LOW); // 모터B설정
+  digitalWrite(EN3, LOW);
+  analogWrite(ENB, 0);
+}
+
 
 int ultra()
 {
@@ -100,4 +112,3 @@ int ultra()
 
   return distance;
 }
-
